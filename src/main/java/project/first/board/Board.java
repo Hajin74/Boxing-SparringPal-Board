@@ -16,7 +16,7 @@ public class Board {
 
     private String title;
 
-    @OneToMany(mappedBy = "board")
+    @OneToMany(mappedBy = "board") // 양방향 연관관계 매핑
     private List<Post> posts = new ArrayList<>();
 
 }
