@@ -28,4 +28,10 @@ public class Comment {
 
     private LocalDateTime createdAt;
 
+    // 연관관계 메소드
+    public void setUser(User user) {
+        this.user = user;
+        user.getComments().add(this);
+    }
+
 }

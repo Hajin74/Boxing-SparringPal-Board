@@ -23,4 +23,10 @@ public class Board {
     @OneToMany(mappedBy = "board") // 양방향 연관관계 매핑
     private List<Post> posts = new ArrayList<>();
 
+    // 연관관계 메소드
+    public void addPost(Post post) {
+        posts.add(post);
+        post.setBoard(this);
+    }
+
 }

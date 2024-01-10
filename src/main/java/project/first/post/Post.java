@@ -35,4 +35,15 @@ public class Post {
 
     private LocalDateTime createdAt;
 
+    // 연관관계 메소드
+    public void setBoard(Board board) {
+        this.board = board;
+        board.getPosts().add(this);
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+        user.getPosts().add(this);
+    }
+
 }
