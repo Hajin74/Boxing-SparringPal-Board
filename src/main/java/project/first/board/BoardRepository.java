@@ -1,29 +1,47 @@
 package project.first.board;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-@RequiredArgsConstructor
 public class BoardRepository {
 
-    private final EntityManager em;
+    private final JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    public BoardRepository(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
+    private final RowMapper<Board> boardMapper() {
+        return (resultSet, rowNum) -> {
+            Board board = new Board();
+            board.setId(resultSet.getLong("board_id"));
+            board.setTitle(resultSet.getString("title"));
+            return board;
+        };
+    }
 
     public void save(Board board) {
-        em.persist(board);
+        String sql = "INSERT INTO board (title) VALUES (?)";
+        jdbcTemplate.update(sql, board.getTitle());
     }
 
     public List<Board> findAll() {
-        return em.createQuery("select b from Board b", Board.class)
-                .getResultList();
+        String sql = "SELECT * FROM board";
+        return jdbcTemplate.query(sql, (resultSet, rowNum) -> Board.builder()
+                .id(resultSet.getLong("board_id"))
+                .title(resultSet.getString("title"))
+                .build());
     }
 
     public Board findById(Long id) {
-        return em.find(Board.class, id);
+       String sql = "SELECT * from board WHERE board_id = (?)";
+        return (Board) jdbcTemplate.query(sql, boardMapper());
     }
 
 }
