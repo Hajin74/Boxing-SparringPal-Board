@@ -1,12 +1,16 @@
 package project.first.board;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import project.first.post.Post;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Getter
+@Setter
 public class Board {
 
     @Id

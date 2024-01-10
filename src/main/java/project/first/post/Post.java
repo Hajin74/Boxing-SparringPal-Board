@@ -1,12 +1,16 @@
 package project.first.post;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import project.first.board.Board;
 import project.first.user.User;
 
 import java.time.LocalDateTime;
 
 @Entity
+@Getter
+@Setter
 public class Post {
 
     @Id
@@ -14,11 +18,11 @@ public class Post {
     @Column(name = "post_id")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "board_id")
     private Board board;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
