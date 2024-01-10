@@ -33,15 +33,12 @@ public class BoardRepository {
 
     public List<Board> findAll() {
         String sql = "SELECT * FROM board";
-        return jdbcTemplate.query(sql, (resultSet, rowNum) -> Board.builder()
-                .id(resultSet.getLong("board_id"))
-                .title(resultSet.getString("title"))
-                .build());
+        return jdbcTemplate.query(sql, boardMapper());
     }
 
     public Board findById(Long id) {
        String sql = "SELECT * from board WHERE board_id = (?)";
-        return (Board) jdbcTemplate.query(sql, boardMapper());
+        return jdbcTemplate.queryForObject(sql, boardMapper(), id);
     }
 
 }
