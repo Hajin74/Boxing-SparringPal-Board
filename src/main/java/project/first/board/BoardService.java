@@ -32,4 +32,9 @@ public class BoardService {
         return boardRepository.findById(boardId);
     }
 
+    // 게시판 수정
+    public void update(Board board) {
+        boardRepository.update(board);
+    }
+
 }
