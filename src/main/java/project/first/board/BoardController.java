@@ -1,6 +1,7 @@
 package project.first.board;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,6 +32,6 @@ public class BoardController {
         board.setTitle(boardRequestDTO.getTitle());
         Long createdBoardId = boardService.create(board);
 
-        return ResponseEntity.ok(createdBoardId);
+        return new ResponseEntity(createdBoardId, HttpStatus.OK);
     }
 }
