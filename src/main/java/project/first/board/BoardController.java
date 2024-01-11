@@ -25,7 +25,7 @@ public class BoardController {
         return boardService.findOne(id);
     }
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<Long> createBoard(@RequestBody BoardRequestDTO boardRequestDTO) {
         // board 엔티티 생성, 저장
         Board board = new Board();
@@ -34,4 +34,9 @@ public class BoardController {
 
         return new ResponseEntity(createdBoardId, HttpStatus.OK);
     }
+
+
+
+
+
 }
