@@ -1,8 +1,10 @@
 package project.first.board;
 
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.util.List;
 
@@ -16,8 +18,8 @@ public class BoardService {
     // 게시판 생성
     @Transactional
     public Long create(Board board) {
-        boardRepository.save(board);
-        return board.getId();
+        Long createdBoardID = boardRepository.save(board);
+        return createdBoardID;
     }
 
     // 게시판 전체 조회
