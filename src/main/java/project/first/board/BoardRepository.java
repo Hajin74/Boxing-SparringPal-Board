@@ -3,11 +3,16 @@ package project.first.board;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.PreparedStatement;
 import java.util.List;
 
 @Repository
+@Transactional
 public class BoardRepository {
 
     private final JdbcTemplate jdbcTemplate;
@@ -26,9 +31,18 @@ public class BoardRepository {
         };
     }
 
-    public void save(Board board) {
+    public Long save(Board board) {
         String sql = "INSERT INTO board (title) VALUES (?)";
-        jdbcTemplate.update(sql, board.getTitle());
+
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        jdbcTemplate.update(con -> {
+            PreparedStatement ps = con.prepareStatement(sql, new String[]{"board_id"});
+            ps.setString(1, board.getTitle());
+            return ps;
+        }, keyHolder);
+
+        Long key = keyHolder.getKey().longValue();
+        return key;
     }
 
     public List<Board> findAll() {
@@ -38,7 +52,7 @@ public class BoardRepository {
 
     public Board findById(Long id) {
        String sql = "SELECT * from board WHERE board_id = (?)";
-        return jdbcTemplate.queryForObject(sql, boardMapper(), id);
+       return jdbcTemplate.queryForObject(sql, boardMapper(), id);
     }
 
 }
