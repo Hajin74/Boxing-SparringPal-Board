@@ -55,4 +55,9 @@ public class BoardRepository {
        return jdbcTemplate.queryForObject(sql, boardMapper(), id);
     }
 
+    public void update(Board board) {
+        String sql = "UPDATE board SET title = ? WHERE board_id = ?";
+        jdbcTemplate.update(sql, board.getTitle(), board.getId());
+    }
+
 }
