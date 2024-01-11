@@ -33,6 +33,7 @@ public class BoardService {
     }
 
     // 게시판 수정
+    @Transactional
     public void update(Board board) {
         boardRepository.update(board);
     }

@@ -35,8 +35,15 @@ public class BoardController {
         return new ResponseEntity(createdBoardId, HttpStatus.OK);
     }
 
+    @PostMapping("/modify")
+    public ResponseEntity<Board> updateBoard(@RequestBody BoardRequestDTO boardRequestDTO) {
+        Board board = new Board();
+        board.setId(boardRequestDTO.getId());
+        board.setTitle(boardRequestDTO.getTitle());
+        boardService.update(board);
 
-
+        return new ResponseEntity<>(board, HttpStatus.OK);
+    }
 
 
 }
