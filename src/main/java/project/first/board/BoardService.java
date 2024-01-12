@@ -38,4 +38,10 @@ public class BoardService {
         boardRepository.update(board);
     }
 
+    // 게시판 삭제
+    @Transactional
+    public void delete(Long id) {
+        boardRepository.delete(id);
+    }
+
 }
