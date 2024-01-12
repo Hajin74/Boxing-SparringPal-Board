@@ -60,4 +60,9 @@ public class BoardRepository {
         jdbcTemplate.update(sql, board.getTitle(), board.getId());
     }
 
+    public void delete(Long id) {
+        String sql = "DELETE FROM board WHERE board_id = ?";
+        jdbcTemplate.update(sql, id);
+    }
+
 }
