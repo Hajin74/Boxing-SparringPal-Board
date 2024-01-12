@@ -45,5 +45,13 @@ public class BoardController {
         return new ResponseEntity<>(board, HttpStatus.OK);
     }
 
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Boolean> deleteBoard(@PathVariable("id") Long id) {
+        boardService.delete(id);
+
+        return new ResponseEntity<>(true, HttpStatus.OK);
+    }
+
+    // todo: 실패할 경우 예외처리가 필요할 것 같은데..
 
 }
