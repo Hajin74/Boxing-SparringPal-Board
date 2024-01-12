@@ -22,9 +22,4 @@ public class PostController {
         return postService.findByUser(user);
     }
 
-    @GetMapping("/{title}")
-    public List<Post> getPostByTitle(@PathVariable("title") String title) {
-        return postService.findByTitle(title);
-    }
-
 }

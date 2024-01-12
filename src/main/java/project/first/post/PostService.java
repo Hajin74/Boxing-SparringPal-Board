@@ -23,9 +23,4 @@ public class PostService {
         return postRepository.findByUser(user);
     }
 
-    // 게시글 부분 조회 - 타이틀 기반
-    public List<Post> findByTitle(String title) {
-        return postRepository.findByTitle(title);
-    }
-
 }

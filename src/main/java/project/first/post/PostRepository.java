@@ -23,10 +23,4 @@ public class PostRepository {
                 .getResultList();
     }
 
-    public List<Post> findByTitle(String title) {
-        return entityManager.createQuery("SELECT p FROM post p WHERE p.title LIKE '%:title%'", Post.class)
-                .setParameter("title", title)
-                .getResultList();
-    }
-
 }
