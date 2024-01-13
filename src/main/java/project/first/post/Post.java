@@ -3,9 +3,11 @@ package project.first.post;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
 import project.first.board.Board;
 import project.first.user.User;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Entity
@@ -33,7 +35,8 @@ public class Post {
     @Enumerated(EnumType.STRING)
     private PostStatus status;
 
-    private LocalDateTime createdAt;
+    @CreatedDate
+    private Timestamp createdAt;
 
     // 연관관계 메소드
     public void setBoard(Board board) {
