@@ -21,6 +21,9 @@ public class User {
     @Column(name = "user_id")
     private Long id;
 
+    @Column(unique = true)
+    private String name;
+
     @Enumerated(EnumType.STRING)
     private UserStance stance;
 
