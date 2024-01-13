@@ -35,4 +35,10 @@ public class PostService {
         postRepository.update(post);
     }
 
+    // 게시글 삭제 - 아이디
+    @Transactional
+    public void delete(Long id) {
+        postRepository.delete(id);
+    }
+
 }
