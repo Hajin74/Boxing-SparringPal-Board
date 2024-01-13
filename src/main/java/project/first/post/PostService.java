@@ -13,6 +13,12 @@ public class PostService {
 
     private final PostRepository postRepository;
 
+    // 게시글 생성
+    @Transactional
+    public void create(Post post) {
+        postRepository.save(post);
+    }
+
     // 게시글 전체 조회
     public List<Post> findAll() {
         return postRepository.findAll();
