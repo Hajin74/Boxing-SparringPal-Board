@@ -1,16 +1,22 @@
 package project.first.board;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import project.first.post.Post;
 
 import java.util.List;
 
 
-@RestController
+
+@Controller
 @RequestMapping("/board")
 @RequiredArgsConstructor
+@Slf4j
 public class BoardController {
 
     private final BoardService boardService;
@@ -53,5 +59,18 @@ public class BoardController {
     }
 
     // todo: 실패할 경우 예외처리가 필요할 것 같은데..
+
+    @GetMapping("/{boardId}/postList")
+    public String showPostList(@PathVariable("boardId") Long id, Model model) {
+        Board board = boardService.findOne(id);
+        List<Post> posts = board.getPosts();
+
+        model.addAttribute("board", board);
+        model.addAttribute("posts", posts);
+
+        log.info("<< showPostList 메소드 >>");
+
+        return "post/postList";
+    }
 
 }
