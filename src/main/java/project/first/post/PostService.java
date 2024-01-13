@@ -29,4 +29,10 @@ public class PostService {
         return postRepository.findByUser(user);
     }
 
+    // 게시글 수정 - 타이틀, 내용
+    @Transactional
+    public void modify(Post post) {
+        postRepository.update(post);
+    }
+
 }
