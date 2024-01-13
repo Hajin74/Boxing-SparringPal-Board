@@ -31,4 +31,12 @@ public class PostRepository {
                 .getResultList();
     }
 
+    public void update(Post post) {
+        entityManager.createQuery("UPDATE Post p SET p.title = :title, p.content = :content WHERE p.id = :id")
+            .setParameter("title", post.getTitle())
+            .setParameter("content", post.getContent())
+            .setParameter("id", post.getId())
+            .executeUpdate();
+    }
+
 }
