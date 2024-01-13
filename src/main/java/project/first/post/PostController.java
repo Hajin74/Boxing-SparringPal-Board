@@ -37,4 +37,16 @@ public class PostController {
         return postService.findByUser(user);
     }
 
+    @PostMapping("/modify/{postId}")
+    public ResponseEntity<Boolean> modifyPost(@PathVariable Long postId, @RequestBody PostRequestDTO postRequestDTO) {
+        Post post = new Post();
+        post.setId(postId);
+        post.setTitle(postRequestDTO.getTitle());
+        post.setContent(postRequestDTO.getContent());
+
+        postService.modify(post);
+
+        return new ResponseEntity<>(true, HttpStatus.OK);
+    }
+
 }
