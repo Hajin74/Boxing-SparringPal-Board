@@ -6,6 +6,7 @@ import lombok.Data;
 public class UserRequestDTO {
 
     private Long id;
+    private String name;
     private UserStance stance;
 
 }

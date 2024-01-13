@@ -3,6 +3,9 @@ package project.first.user;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import project.first.post.Post;
+
+import java.util.List;
 
 
 @Repository
@@ -17,6 +20,17 @@ public class UserRepository {
         } else {
             entityManager.merge(user);
         }
+    }
+
+    public List<User> findAll() {
+        return entityManager.createQuery("SELECT u FROM User u", User.class)
+                .getResultList();
+    }
+
+    public User findByName(String name) {
+        return entityManager.createQuery("SELECT u FROM User u WHERE u.name = :name", User.class)
+                .setParameter("name", name)
+                .getSingleResult();
     }
 
 }
