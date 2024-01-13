@@ -36,5 +36,4 @@ public class BoardServiceTest {
         // then
         assertEquals(boardId, boardRepository.findById(boardId).getId());
     }
-
 }
