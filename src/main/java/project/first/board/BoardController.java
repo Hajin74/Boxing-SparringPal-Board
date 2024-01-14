@@ -1,5 +1,6 @@
 package project.first.board;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -32,13 +33,13 @@ public class BoardController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<Long> createBoard(@RequestBody BoardRequestDTO boardRequestDTO) {
-        // board 엔티티 생성, 저장
+    public String createBoard(BoardForm boardForm) {
         Board board = new Board();
-        board.setTitle(boardRequestDTO.getTitle());
+        board.setTitle(boardForm.getTitle());
         Long createdBoardId = boardService.create(board);
+        log.info("<< createBoard 메소드 >> : " + createdBoardId);
 
-        return new ResponseEntity(createdBoardId, HttpStatus.OK);
+        return "redirect:/";
     }
 
     @PostMapping("/modify")
@@ -71,6 +72,12 @@ public class BoardController {
         log.info("<< showPostList 메소드 >>");
 
         return "post/postList";
+    }
+
+    @GetMapping("/createForm")
+    public String showCreateForm() {
+        log.info("<< showCreateForm 메소드 >>");
+        return "board/createForm";
     }
 
 }
