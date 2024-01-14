@@ -1,8 +1,12 @@
 package project.first.post;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import project.first.board.Board;
+import project.first.board.BoardRepository;
+import project.first.board.BoardRequestDTO;
 
 import java.util.List;
 
@@ -12,10 +16,13 @@ import java.util.List;
 public class PostService {
 
     private final PostRepository postRepository;
+    private final BoardRepository boardRepository;
 
     // 게시글 생성
     @Transactional
-    public void create(Post post) {
+    public void create(Post post, Long boardId) {
+        Board board = boardRepository.findById(boardId);
+        post.setBoard(board);
         postRepository.save(post);
     }
 

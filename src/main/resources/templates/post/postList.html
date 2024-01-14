@@ -28,6 +28,7 @@
             </tr>
             </tbody>
         </table>
+        <a class="btn btn-lg btn-primary" th:href="@{/post/createForm(boardId=${board.id})}" style="margin: 30px 0px;">게시글 쓰기</a>
     </div>
 
     <div th:replace="fragments/footer :: footer" />

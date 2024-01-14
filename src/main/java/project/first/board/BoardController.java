@@ -66,10 +66,12 @@ public class BoardController {
         Board board = boardService.findOne(id);
         List<Post> posts = board.getPosts();
 
+        // todo: 전달받은 board_id에 해당하는 게시글들만 보여준다.
+
         model.addAttribute("board", board);
         model.addAttribute("posts", posts);
 
-        log.info("<< showPostList 메소드 >>");
+        log.info("<< showPostList 메소드 >> : " + board.getId() + board.getPosts());
 
         return "post/postList";
     }

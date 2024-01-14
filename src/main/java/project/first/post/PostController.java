@@ -1,30 +1,37 @@
 package project.first.post;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import project.first.board.Board;
+import project.first.board.BoardForm;
 import project.first.user.User;
 import project.first.user.UserRequestDTO;
 
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("/post")
 @RequiredArgsConstructor
+@Slf4j
 public class PostController {
 
     private final PostService postService;
 
     @PostMapping("/create")
-    public ResponseEntity<Post> createPost(@RequestBody PostRequestDTO postRequestDTO) {
-        Post post = new Post();
-        post.setTitle(postRequestDTO.getTitle());
-        post.setContent(postRequestDTO.getContent());
-        post.setStatus(postRequestDTO.getStatus());
-        postService.create(post);
+    public String createPost(@RequestParam("boardId") Long boardId, PostForm postForm) {
+        log.info("<< PostController - createPost 호출");
 
-        return new ResponseEntity<>(post, HttpStatus.OK);
+        Post post = new Post();
+        post.setTitle(postForm.getTitle());
+        post.setContent(postForm.getContent());
+        post.setStatus(postForm.getStatus());
+        postService.create(post, boardId);
+
+        return "redirect:/board/" + boardId + "/postList"; // 게시글 목록 postList 페이지로 들어가야함
     }
 
     @GetMapping
@@ -56,4 +63,9 @@ public class PostController {
         return new ResponseEntity<>(true, HttpStatus.OK);
     }
 
+    @GetMapping("/createForm")
+    public String showCreateForm() {
+        log.info("<< Post - showCreateForm 메소드 >>");
+        return "post/createForm";
+    }
 }
