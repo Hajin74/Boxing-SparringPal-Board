@@ -5,9 +5,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import project.first.board.Board;
 import project.first.board.BoardForm;
+import project.first.board.BoardService;
 import project.first.user.User;
 import project.first.user.UserRequestDTO;
 
@@ -20,6 +22,7 @@ import java.util.List;
 public class PostController {
 
     private final PostService postService;
+    private final BoardService boardService;
 
     @PostMapping("/create")
     public String createPost(@RequestParam("boardId") Long boardId, PostForm postForm) {
@@ -31,12 +34,27 @@ public class PostController {
         post.setStatus(postForm.getStatus());
         postService.create(post, boardId);
 
-        return "redirect:/board/" + boardId + "/postList"; // 게시글 목록 postList 페이지로 들어가야함
+        return "redirect:/post/posts?boardId=" + boardId;
     }
 
     @GetMapping
     public List<Post> getAllPost() {
+        log.info("<< PostController - getAllPost 호출");
+
         return postService.findAll();
+    }
+
+    @GetMapping("/posts")
+    public String showPostsByBoardId(@RequestParam("boardId") Long boardId, Model model) {
+        Board board = boardService.findOne(boardId);
+        List<Post> posts = postService.findByBoard(boardId);
+
+        model.addAttribute("posts", posts);
+        model.addAttribute("board", board);
+
+        log.info(posts.toString());
+
+        return "post/postList";
     }
 
     @GetMapping("/{userName}")

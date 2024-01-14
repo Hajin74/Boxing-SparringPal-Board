@@ -31,6 +31,12 @@ public class PostRepository {
                 .getResultList();
     }
 
+    public List<Post> findByBoardId(Long boardId) {
+        return entityManager.createQuery("SELECT p FROM Post p WHERE p.board.id = :boardId", Post.class)
+                .setParameter("boardId", boardId)
+                .getResultList();
+    }
+
     public void update(Post post) {
         entityManager.createQuery("UPDATE Post p SET p.title = :title, p.content = :content WHERE p.id = :id")
                 .setParameter("title", post.getTitle())

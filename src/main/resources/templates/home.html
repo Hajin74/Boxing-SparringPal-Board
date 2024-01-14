@@ -19,7 +19,7 @@
             <tbody>
                 <tr th:each="board : ${boards}">
                     <td>
-                        <a class="btn btn-lg btn-info" th:text="${board.title}" style="width: 300px" th:href="@{/board/{id}/postList (id=${board.id})}"></a>
+                        <a class="btn btn-lg btn-info" th:text="${board.title}" style="width: 300px" th:href="@{/post/posts(boardId=${board.id})}"></a>
                     </td>
                 </tr>
             </tbody>

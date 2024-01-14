@@ -23,7 +23,7 @@ public class Board {
 
     private String title;
 
-    @OneToMany(mappedBy = "board") // 양방향 연관관계 매핑
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, fetch = FetchType.LAZY) // 양방향 연관관계 매핑
     private List<Post> posts = new ArrayList<>();
 
     // 연관관계 메소드

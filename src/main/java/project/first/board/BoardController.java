@@ -1,14 +1,11 @@
 package project.first.board;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import project.first.post.Post;
 
 import java.util.List;
 
@@ -61,24 +58,10 @@ public class BoardController {
 
     // todo: 실패할 경우 예외처리가 필요할 것 같은데..
 
-    @GetMapping("/{boardId}/postList")
-    public String showPostList(@PathVariable("boardId") Long id, Model model) {
-        Board board = boardService.findOne(id);
-        List<Post> posts = board.getPosts();
-
-        // todo: 전달받은 board_id에 해당하는 게시글들만 보여준다.
-
-        model.addAttribute("board", board);
-        model.addAttribute("posts", posts);
-
-        log.info("<< showPostList 메소드 >> : " + board.getId() + board.getPosts());
-
-        return "post/postList";
-    }
-
     @GetMapping("/createForm")
     public String showCreateForm() {
         log.info("<< showCreateForm 메소드 >>");
+
         return "board/createForm";
     }
 
