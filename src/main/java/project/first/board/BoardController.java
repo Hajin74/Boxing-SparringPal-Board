@@ -1,16 +1,23 @@
 package project.first.board;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import project.first.post.Post;
 
 import java.util.List;
 
 
-@RestController
+
+@Controller
 @RequestMapping("/board")
 @RequiredArgsConstructor
+@Slf4j
 public class BoardController {
 
     private final BoardService boardService;
@@ -26,13 +33,13 @@ public class BoardController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<Long> createBoard(@RequestBody BoardRequestDTO boardRequestDTO) {
-        // board 엔티티 생성, 저장
+    public String createBoard(BoardForm boardForm) {
         Board board = new Board();
-        board.setTitle(boardRequestDTO.getTitle());
+        board.setTitle(boardForm.getTitle());
         Long createdBoardId = boardService.create(board);
+        log.info("<< createBoard 메소드 >> : " + createdBoardId);
 
-        return new ResponseEntity(createdBoardId, HttpStatus.OK);
+        return "redirect:/";
     }
 
     @PostMapping("/modify")
@@ -45,5 +52,32 @@ public class BoardController {
         return new ResponseEntity<>(board, HttpStatus.OK);
     }
 
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Boolean> deleteBoard(@PathVariable("id") Long id) {
+        boardService.delete(id);
+
+        return new ResponseEntity<>(true, HttpStatus.OK);
+    }
+
+    // todo: 실패할 경우 예외처리가 필요할 것 같은데..
+
+    @GetMapping("/{boardId}/postList")
+    public String showPostList(@PathVariable("boardId") Long id, Model model) {
+        Board board = boardService.findOne(id);
+        List<Post> posts = board.getPosts();
+
+        model.addAttribute("board", board);
+        model.addAttribute("posts", posts);
+
+        log.info("<< showPostList 메소드 >>");
+
+        return "post/postList";
+    }
+
+    @GetMapping("/createForm")
+    public String showCreateForm() {
+        log.info("<< showCreateForm 메소드 >>");
+        return "board/createForm";
+    }
 
 }
