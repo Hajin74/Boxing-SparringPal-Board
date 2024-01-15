@@ -26,8 +26,6 @@ public class PostService {
         Board board = boardRepository.findById(boardId);
         post.setBoard(board);
         postRepository.save(post);
-
-//        log.info("[postCreate] post.board : " + boardId + ", board.posts : " + board.getPosts());
     }
 
     // 게시글 전체 조회
@@ -40,9 +38,14 @@ public class PostService {
         return postRepository.findByUser(user);
     }
 
+    // 게시글 조회 - 아이디 기반
+    public Post findById(Long id) {
+        return postRepository.findById(id);
+    }
+
     // 게시글 부분 조회 - 게시판 아이디 기반
-    public List<Post> findByBoard(Long id) {
-        return postRepository.findByBoardId(id);
+    public List<Post> findByBoard(Long boardId) {
+        return postRepository.findByBoardId(boardId);
     }
 
     // 게시글 수정 - 타이틀, 내용

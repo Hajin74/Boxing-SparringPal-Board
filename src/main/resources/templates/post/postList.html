@@ -20,7 +20,7 @@
             <tbody>
             <tr th:each="post : ${posts}">
                 <td>
-                    <a th:text="${post.title}" style="width: 300px"></a>
+                    <a th:text="${post.title}" th:href="@{/post/detail/{postId}(postId=${post.id})}" style="width: 300px"></a>
                 </td>
                 <td>
                     <a th:text="${post.status}" style="width: 300px"></a>

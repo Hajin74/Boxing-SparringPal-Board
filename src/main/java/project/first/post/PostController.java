@@ -62,6 +62,14 @@ public class PostController {
         return postService.findByUser(user);
     }
 
+    @GetMapping("/detail/{postId}")
+    public String getPostById(@PathVariable("postId") Long postId, Model model) {
+        Post post = postService.findById(postId);
+        model.addAttribute("post", post);
+
+        return "post/postDetail";
+    }
+
     @PostMapping("/modify/{postId}")
     public ResponseEntity<Boolean> modifyPost(@PathVariable Long postId, @RequestBody PostRequestDTO postRequestDTO) {
         Post post = new Post();
