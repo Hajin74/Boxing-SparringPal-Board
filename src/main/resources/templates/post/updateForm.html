@@ -1,0 +1,39 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header" />
+<style>
+  .fieldError {
+         border-color: #bd2130;
+  }
+</style>
+<body>
+<div class="container">
+    <div th:replace="fragments/bodyHeader :: bodyHeader"/>
+    <form role="form" action="/post/update" th:object="${postForm}" method="post">
+        <input type="hidden" th:name="boardId" th:value="${param.boardId}"/>
+        <input type="hidden" th:name="postId" th:value="${param.postId}"/>
+
+        <div class="form-group">
+            <label th:for="title" style="margin-top: 20px;">게시글 제목</label>
+            <input type="text" th:value="${post.title}" name="title" id="title" class="form-control" placeholder="게시글 제목을 입력하세요" style="margin-top: 10px;" >
+        </div>
+        <div class="form-group" style="margin-top: 30px;">
+            <p>모집 상태</p>
+            <input type="radio" name="status" id="recruiting" value="RECRUITING" required>
+            <label for="recruiting">모집 중</label>
+            <input type="radio" name="status" id="completed" value="COMPLETED" required>
+            <label for="completed">모집 완료</label>
+        </div>
+        <div class="form-group" style="margin-top: 15px;">
+            <label th:for="content" style="margin-top: 20px;">게시글 내용</label>
+            <input type="text" th:value="${post.content}" name="content" id="content" class="form-control" style="margin-top: 10px; height: 200px;" required>
+        </div>
+        <button type="submit" class="btn btn-primary" style="margin: 30px 0px;">수정 완료</button>
+    </form>
+
+    <br/>
+
+    <div th:replace="fragments/footer :: footer" />
+</div> <!-- /container -->
+</body>
+</html>

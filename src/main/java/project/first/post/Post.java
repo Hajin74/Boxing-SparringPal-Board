@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import project.first.board.Board;
 import project.first.user.User;
 
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
+@EntityListeners(AuditingEntityListener.class)
 public class Post {
 
     @Id
@@ -36,7 +38,8 @@ public class Post {
     private PostStatus status;
 
     @CreatedDate
-    private Timestamp createdAt;
+    @Column(updatable = false)
+    private LocalDateTime createdAt;
 
     // 연관관계 메소드
     public void setBoard(Board board) {
