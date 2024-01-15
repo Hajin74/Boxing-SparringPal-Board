@@ -16,7 +16,7 @@
 
     <div style="padding: 0 20px;">
         <div>
-            <p id="board-id" th:text="${post.board.title}"></p>
+            <a id="board-id" th:text="${post.board.title}" th:href="@{/post/posts(boardId=${post.board.id})}"></a>
             <h3 id="title" th:text="${post.title}"></h3>
             <div class="post-info">
                 <span id="createdAt" th:text="${post.createdAt}"></span>
