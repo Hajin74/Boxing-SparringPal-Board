@@ -29,6 +29,7 @@
     </div>
 
     <a class="btn btn-lg btn-primary" th:href="@{/post/updateForm(postId=${post.id}, boardId=${post.board.id})}" style="margin: 20px 0 50px 20px;">게시글 수정하기</a>
+    <a class="btn btn-lg btn-primary" th:href="@{/post/delete/{id}(id=${post.id})}" style="margin: 20px 0 50px 10px;">게시글 삭제하기</a>
 
     <div th:replace="fragments/footer :: footer" />
 </div> <!-- /container -->

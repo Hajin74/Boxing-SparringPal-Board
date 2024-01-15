@@ -86,15 +86,18 @@ public class PostController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Boolean> deletePost(@PathVariable("id") Long id) {
+    public String deletePost(@PathVariable("id") Long id) {
+        log.info("<< Post - deletePost ");
         postService.delete(id);
 
-        return new ResponseEntity<>(true, HttpStatus.OK);
+        return "redirect:/post/postList";
     }
 
     @GetMapping("/createForm")
-    public String showCreateForm() {
+    public String showCreateForm(@RequestParam("boardId") Long boardId, Model model) {
         log.info("<< Post - showCreateForm 메소드 >>");
+        model.addAttribute("boardId", boardId);
+
         return "post/createForm";
     }
 
