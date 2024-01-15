@@ -1,21 +1,30 @@
 package project.first.post;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import project.first.board.Board;
+import project.first.board.BoardRepository;
+import project.first.board.BoardRequestDTO;
 
 import java.util.List;
 
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
+@Slf4j
 public class PostService {
 
     private final PostRepository postRepository;
+    private final BoardRepository boardRepository;
 
     // 게시글 생성
     @Transactional
-    public void create(Post post) {
+    public void save(Post post, Long boardId) {
+        Board board = boardRepository.findById(boardId);
+        post.setBoard(board);
         postRepository.save(post);
     }
 
@@ -29,9 +38,20 @@ public class PostService {
         return postRepository.findByUser(user);
     }
 
+    // 게시글 조회 - 아이디 기반
+    public Post findById(Long id) {
+        return postRepository.findById(id);
+    }
+
+    // 게시글 부분 조회 - 게시판 아이디 기반
+    public List<Post> findByBoard(Long boardId) {
+        return postRepository.findByBoardId(boardId);
+    }
+
     // 게시글 수정 - 타이틀, 내용
     @Transactional
     public void modify(Post post) {
+        log.info("<< post - modify >>");
         postRepository.update(post);
     }
 
