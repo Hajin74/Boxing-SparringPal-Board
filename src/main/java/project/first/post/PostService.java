@@ -22,7 +22,7 @@ public class PostService {
 
     // 게시글 생성
     @Transactional
-    public void create(Post post, Long boardId) {
+    public void save(Post post, Long boardId) {
         Board board = boardRepository.findById(boardId);
         post.setBoard(board);
         postRepository.save(post);
@@ -51,6 +51,7 @@ public class PostService {
     // 게시글 수정 - 타이틀, 내용
     @Transactional
     public void modify(Post post) {
+        log.info("<< post - modify >>");
         postRepository.update(post);
     }
 

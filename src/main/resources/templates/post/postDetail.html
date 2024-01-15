@@ -28,8 +28,7 @@
         </div>
     </div>
 
-    <button type="submit" class="btn btn-primary" style="margin: 20px 0 50px 20px;">게시글 수정하기</button>
-
+    <a class="btn btn-lg btn-primary" th:href="@{/post/updateForm(postId=${post.id}, boardId=${post.board.id})}" style="margin: 20px 0 50px 20px;">게시글 수정하기</a>
 
     <div th:replace="fragments/footer :: footer" />
 </div> <!-- /container -->

@@ -32,7 +32,7 @@ public class PostController {
         post.setTitle(postForm.getTitle());
         post.setContent(postForm.getContent());
         post.setStatus(postForm.getStatus());
-        postService.create(post, boardId);
+        postService.save(post, boardId);
 
         return "redirect:/post/posts?boardId=" + boardId;
     }
@@ -70,16 +70,19 @@ public class PostController {
         return "post/postDetail";
     }
 
-    @PostMapping("/modify/{postId}")
-    public ResponseEntity<Boolean> modifyPost(@PathVariable Long postId, @RequestBody PostRequestDTO postRequestDTO) {
+    @PostMapping("/update")
+    public String modifyPost(@RequestParam("boardId") Long boardId, @RequestParam("postId") Long postId, PostForm postForm) {
+        log.info("<< modifyPost 호출>> : " + postForm.getContent());
+
         Post post = new Post();
         post.setId(postId);
-        post.setTitle(postRequestDTO.getTitle());
-        post.setContent(postRequestDTO.getContent());
+        post.setTitle(postForm.getTitle());
+        post.setContent(postForm.getContent());
+        post.setStatus(postForm.getStatus());
 
-        postService.modify(post);
+        postService.save(post, boardId);
 
-        return new ResponseEntity<>(true, HttpStatus.OK);
+        return "redirect:/post/detail/" + postId;
     }
 
     @DeleteMapping("/delete/{id}")
@@ -93,5 +96,14 @@ public class PostController {
     public String showCreateForm() {
         log.info("<< Post - showCreateForm 메소드 >>");
         return "post/createForm";
+    }
+
+    @GetMapping("/updateForm")
+    public String showUpdateForm(@RequestParam("postId") Long postId, @RequestParam("boardId") Long boardId, Model model) {
+        Post post = postService.findById(postId);
+        model.addAttribute("post", post);
+
+        log.info("<< Post - showUpdateForm 메소드 >>");
+        return "post/updateForm";
     }
 }

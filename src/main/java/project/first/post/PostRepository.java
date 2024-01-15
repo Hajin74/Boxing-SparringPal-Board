@@ -2,12 +2,14 @@ package project.first.post;
 
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
+@Slf4j
 public class PostRepository {
 
     private final EntityManager entityManager;
@@ -44,11 +46,12 @@ public class PostRepository {
     }
 
     public void update(Post post) {
-        entityManager.createQuery("UPDATE Post p SET p.title = :title, p.content = :content WHERE p.id = :id")
+        int result = entityManager.createQuery("UPDATE Post p SET p.title = :title, p.content = :content WHERE p.id = :id")
                 .setParameter("title", post.getTitle())
                 .setParameter("content", post.getContent())
                 .setParameter("id", post.getId())
                 .executeUpdate();
+        log.info("<< update 결과 : " + result + " >>");
     }
 
     public void delete(Long id) {

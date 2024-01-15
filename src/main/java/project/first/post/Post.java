@@ -38,6 +38,7 @@ public class Post {
     private PostStatus status;
 
     @CreatedDate
+    @Column(updatable = false)
     private LocalDateTime createdAt;
 
     // 연관관계 메소드
