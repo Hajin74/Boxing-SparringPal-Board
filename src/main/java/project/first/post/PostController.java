@@ -25,14 +25,21 @@ public class PostController {
     private final PostService postService;
     private final BoardService boardService;
 
+    @GetMapping("/createForm")
+    public String showCreateForm(@RequestParam("boardId") Long boardId, Model model) {
+        model.addAttribute("boardId", boardId);
+
+        return "post/createForm";
+    }
+
     @PostMapping("/create")
     public String createPost(@RequestParam("boardId") Long boardId, PostForm postForm) {
-        log.info("<< PostController - createPost 호출");
+        Post post = Post.builder()
+                    .title(postForm.getTitle())
+                    .content(postForm.getContent())
+                    .status(postForm.getStatus())
+                    .build();
 
-        Post post = new Post();
-        post.setTitle(postForm.getTitle());
-        post.setContent(postForm.getContent());
-        post.setStatus(postForm.getStatus());
         postService.save(post, boardId);
 
         return "redirect:/post/posts?boardId=" + boardId;
@@ -40,8 +47,6 @@ public class PostController {
 
     @GetMapping
     public List<Post> getAllPost() {
-        log.info("<< PostController - getAllPost 호출");
-
         return postService.findAll();
     }
 
@@ -52,8 +57,6 @@ public class PostController {
 
         model.addAttribute("posts", posts);
         model.addAttribute("board", board);
-
-        log.info(posts.toString());
 
         return "post/postList";
     }
@@ -67,41 +70,11 @@ public class PostController {
     public String getPostById(@PathVariable("postId") Long postId, Model model) {
         Post post = postService.findById(postId);
         List<Comment> comments = post.getComments();
+
         model.addAttribute("post", post);
         model.addAttribute("comments", comments);
 
         return "post/postDetail";
-    }
-
-    @PostMapping("/update")
-    public String modifyPost(@RequestParam("boardId") Long boardId, @RequestParam("postId") Long postId, PostForm postForm) {
-        log.info("<< modifyPost 호출>> : " + postForm.getContent());
-
-        Post post = new Post();
-        post.setId(postId);
-        post.setTitle(postForm.getTitle());
-        post.setContent(postForm.getContent());
-        post.setStatus(postForm.getStatus());
-
-        postService.save(post, boardId);
-
-        return "redirect:/post/detail/" + postId;
-    }
-
-    @DeleteMapping("/delete/{id}")
-    public String deletePost(@PathVariable("id") Long id) {
-        log.info("<< Post - deletePost ");
-        postService.delete(id);
-
-        return "redirect:/post/postList";
-    }
-
-    @GetMapping("/createForm")
-    public String showCreateForm(@RequestParam("boardId") Long boardId, Model model) {
-        log.info("<< Post - showCreateForm 메소드 >>");
-        model.addAttribute("boardId", boardId);
-
-        return "post/createForm";
     }
 
     @GetMapping("/updateForm")
@@ -109,7 +82,23 @@ public class PostController {
         Post post = postService.findById(postId);
         model.addAttribute("post", post);
 
-        log.info("<< Post - showUpdateForm 메소드 >>");
         return "post/updateForm";
     }
+
+    @PostMapping("/update")
+    public String updatePost(@RequestParam("boardId") Long boardId, @RequestParam("postId") Long postId, PostForm postForm) {
+        Post post = postService.findById(postId);
+        post.updatePost(postForm.getTitle(), postForm.getContent(), postForm.getStatus());
+        postService.save(post, boardId);
+
+        return "redirect:/post/detail/" + postId;
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public String deletePost(@PathVariable("id") Long id) {
+        postService.delete(id);
+
+        return "redirect:/post/postList";
+    }
+
 }

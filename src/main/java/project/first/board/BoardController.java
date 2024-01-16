@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
-
 @Controller
 @RequestMapping("/board")
 @RequiredArgsConstructor
@@ -18,6 +16,22 @@ import java.util.List;
 public class BoardController {
 
     private final BoardService boardService;
+
+    @GetMapping("/createForm")
+    public String showCreateForm() {
+        return "board/createForm";
+    }
+
+    @PostMapping("/create")
+    public String createBoard(BoardForm boardForm) {
+        Board board = Board.builder()
+                .title(boardForm.getTitle())
+                .build();
+
+        boardService.create(board);
+
+        return "redirect:/";
+    }
 
     @GetMapping
     public List<Board> getAllBoard() {
@@ -29,21 +43,10 @@ public class BoardController {
         return boardService.findOne(id);
     }
 
-    @PostMapping("/create")
-    public String createBoard(BoardForm boardForm) {
-        Board board = new Board();
-        board.setTitle(boardForm.getTitle());
-        Long createdBoardId = boardService.create(board);
-        log.info("<< createBoard 메소드 >> : " + createdBoardId);
-
-        return "redirect:/";
-    }
-
     @PostMapping("/modify")
     public ResponseEntity<Board> updateBoard(@RequestBody BoardRequestDTO boardRequestDTO) {
-        Board board = new Board();
-        board.setId(boardRequestDTO.getId());
-        board.setTitle(boardRequestDTO.getTitle());
+        Board board = boardService.findOne(boardRequestDTO.getId());
+        board.updateBoard(boardRequestDTO.getTitle());
         boardService.update(board);
 
         return new ResponseEntity<>(board, HttpStatus.OK);
@@ -54,15 +57,6 @@ public class BoardController {
         boardService.delete(id);
 
         return new ResponseEntity<>(true, HttpStatus.OK);
-    }
-
-    // todo: 실패할 경우 예외처리가 필요할 것 같은데..
-
-    @GetMapping("/createForm")
-    public String showCreateForm() {
-        log.info("<< showCreateForm 메소드 >>");
-
-        return "board/createForm";
     }
 
 }
