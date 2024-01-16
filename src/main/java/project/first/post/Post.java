@@ -44,6 +44,7 @@ public class Post {
     private LocalDateTime createdAt;
 
     @OneToMany(mappedBy = "post")
+    @OrderBy("createdAt DESC")
     private List<Comment> comments;
 
     // 연관관계 편의 메소드

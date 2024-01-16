@@ -14,7 +14,7 @@
         border-bottom: 1px solid black;
         padding: 20px 0px;
     }
-    #content .buttons {
+    #content-buttons {
         margin-top: 30px;
     }
     .comment-input {
@@ -50,7 +50,7 @@
 
         <div id="content-wrapper">
             <div th:text="${post.content}" style=""></div>
-            <div class="buttons">
+            <div id="content-buttons">
                 <a class="btn btn-lg btn-primary" th:href="@{/post/updateForm(postId=${post.id}, boardId=${post.board.id})}">게시글 수정하기</a>
                 <a class="btn btn-lg btn-primary" th:href="@{/post/delete/{id}(id=${post.id})}">게시글 삭제하기</a>
             </div>

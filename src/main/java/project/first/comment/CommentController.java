@@ -26,4 +26,10 @@ public class CommentController {
         return "redirect:/post/detail/" + postId;
     }
 
+    @PostMapping("/update")
+    public String updateComment() {
+
+        return "redirect:/";
+    }
+
 }
