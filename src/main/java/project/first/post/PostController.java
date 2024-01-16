@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import project.first.board.Board;
 import project.first.board.BoardForm;
 import project.first.board.BoardService;
+import project.first.comment.Comment;
 import project.first.user.User;
 import project.first.user.UserRequestDTO;
 
@@ -65,7 +66,9 @@ public class PostController {
     @GetMapping("/detail/{postId}")
     public String getPostById(@PathVariable("postId") Long postId, Model model) {
         Post post = postService.findById(postId);
+        List<Comment> comments = post.getComments();
         model.addAttribute("post", post);
+        model.addAttribute("comments", comments);
 
         return "post/postDetail";
     }
