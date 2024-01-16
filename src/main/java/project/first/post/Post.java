@@ -6,10 +6,12 @@ import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import project.first.board.Board;
+import project.first.comment.Comment;
 import project.first.user.User;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -41,7 +43,10 @@ public class Post {
     @Column(updatable = false)
     private LocalDateTime createdAt;
 
-    // 연관관계 메소드
+    @OneToMany(mappedBy = "post")
+    private List<Comment> comments;
+
+    // 연관관계 편의 메소드
     public void setBoard(Board board) {
         this.board = board;
         board.getPosts().add(this);
