@@ -27,9 +27,9 @@ public class CommentController {
     }
 
     @PostMapping("/update")
-    public String updateComment() {
-
-        return "redirect:/";
+    public String updateComment(@RequestParam("postId") Long postId, @RequestParam("commentId") Long commentId, CommentForm commentForm) {
+        commentService.update(commentId, commentForm.getContent());
+        return "redirect:/post/detail/" + postId;
     }
 
 }
