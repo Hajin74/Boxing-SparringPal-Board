@@ -55,9 +55,6 @@ public class PostRepository {
     }
 
     public void delete(Post post) {
-//        entityManager.createQuery("Delete From Post p WHERE p.id = :id")
-//                .setParameter("id", id)
-//                .executeUpdate();
         entityManager.remove(post);
     }
 

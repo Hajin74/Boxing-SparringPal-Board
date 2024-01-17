@@ -97,7 +97,6 @@ public class PostController {
         Long boardId = postService.findById(id).getBoard().getId();
         Post post = postService.findById(id);
         postService.delete(post);
-//        postService.delete(id);
 
         return "redirect:/post/posts?boardId=" + boardId;
     }
