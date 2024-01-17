@@ -95,7 +95,9 @@ public class PostController {
     @DeleteMapping("/delete/{id}")
     public String deletePost(@PathVariable("id") Long id) {
         Long boardId = postService.findById(id).getBoard().getId();
-        postService.delete(id);
+        Post post = postService.findById(id);
+        postService.delete(post);
+//        postService.delete(id);
 
         return "redirect:/post/posts?boardId=" + boardId;
     }

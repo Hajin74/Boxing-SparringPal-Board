@@ -54,10 +54,11 @@ public class PostRepository {
         log.info("<< update 결과 : " + result + " >>");
     }
 
-    public void delete(Long id) {
-        entityManager.createQuery("Delete From Post p WHERE p.id = :id")
-                .setParameter("id", id)
-                .executeUpdate();
+    public void delete(Post post) {
+//        entityManager.createQuery("Delete From Post p WHERE p.id = :id")
+//                .setParameter("id", id)
+//                .executeUpdate();
+        entityManager.remove(post);
     }
 
 }
