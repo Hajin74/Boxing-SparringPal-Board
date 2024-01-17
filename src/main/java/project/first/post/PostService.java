@@ -48,11 +48,11 @@ public class PostService {
         return postRepository.findByBoardId(boardId);
     }
 
-    // 게시글 수정 - 타이틀, 내용
+    // 게시글 수정
     @Transactional
-    public void modify(Post post) {
-        log.info("<< post - modify >>");
-        postRepository.update(post);
+    public void update(Long postId, String title, String content, PostStatus status) {
+        Post post = postRepository.findById(postId); // 얘는 JPA가 관리하는 영속 상태가 됨
+        post.updatePost(title, content, status); // 영속상태에 있는 엔티티는 더티체킹을 통해 자동으로 변경 쿼리가 날라감
     }
 
     // 게시글 삭제 - 아이디
