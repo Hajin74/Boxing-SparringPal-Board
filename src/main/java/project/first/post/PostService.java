@@ -57,8 +57,8 @@ public class PostService {
 
     // 게시글 삭제 - 아이디
     @Transactional
-    public void delete(Long id) {
-        postRepository.delete(id);
+    public void delete(Post post) {
+        postRepository.delete(post);
     }
 
 }
