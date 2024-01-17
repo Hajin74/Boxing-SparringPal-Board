@@ -26,9 +26,14 @@ public class CommentService {
         commentRepository.save(comment);
     }
 
-    // 댓글 조회 - 게시글 마다
+    // 댓글 조회 - 게시글 아이디
     public List<Comment> findByPostId(Long postId) {
         return commentRepository.findByPostId(postId);
+    }
+
+    // 댓글 조회 - 아이디
+    public Comment findOne(Long commentId) {
+        return commentRepository.findOne(commentId);
     }
 
     // 댓글 수정
@@ -36,5 +41,11 @@ public class CommentService {
     public void update(Long commentId, String content) {
         Comment comment = commentRepository.findOne(commentId);
         comment.updateComment(content);
+    }
+
+    // 댓글 삭제
+    @Transactional
+    public void delete(Comment comment) {
+        commentRepository.delete(comment);
     }
 }

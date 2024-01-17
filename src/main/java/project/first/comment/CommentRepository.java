@@ -34,4 +34,9 @@ public class CommentRepository {
                 .setParameter("postId", postId)
                 .getResultList();
     }
+
+    public void delete(Comment comment) {
+        entityManager.remove(comment);
+    }
+
 }
