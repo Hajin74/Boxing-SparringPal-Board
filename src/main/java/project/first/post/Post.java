@@ -47,7 +47,7 @@ public class Post {
     @Column(updatable = false)
     private LocalDateTime createdAt;
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     @OrderBy("createdAt DESC")
     private List<Comment> comments;
 

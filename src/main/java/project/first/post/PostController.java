@@ -87,9 +87,6 @@ public class PostController {
 
     @PostMapping("/update")
     public String updatePost(@RequestParam("boardId") Long boardId, @RequestParam("postId") Long postId, PostForm postForm) {
-//        post.updatePost(postForm.getTitle(), postForm.getContent(), postForm.getStatus());
-//        postService.save(post, boardId);
-
         postService.update(postId, postForm.getTitle(), postForm.getContent(), postForm.getStatus());
 
         return "redirect:/post/detail/" + postId;
@@ -97,9 +94,10 @@ public class PostController {
 
     @DeleteMapping("/delete/{id}")
     public String deletePost(@PathVariable("id") Long id) {
+        Long boardId = postService.findById(id).getBoard().getId();
         postService.delete(id);
 
-        return "redirect:/post/postList";
+        return "redirect:/post/posts?boardId=" + boardId;
     }
 
 }
