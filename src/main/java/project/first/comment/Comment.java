@@ -41,4 +41,8 @@ public class Comment {
         user.getComments().add(this);
     }
 
+    /* 메소드 */
+    public void updateComment(String content) {
+        this.content = content;
+    }
 }
