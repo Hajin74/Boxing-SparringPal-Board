@@ -87,9 +87,10 @@ public class PostController {
 
     @PostMapping("/update")
     public String updatePost(@RequestParam("boardId") Long boardId, @RequestParam("postId") Long postId, PostForm postForm) {
-        Post post = postService.findById(postId);
-        post.updatePost(postForm.getTitle(), postForm.getContent(), postForm.getStatus());
-        postService.save(post, boardId);
+//        post.updatePost(postForm.getTitle(), postForm.getContent(), postForm.getStatus());
+//        postService.save(post, boardId);
+
+        postService.update(postId, postForm.getTitle(), postForm.getContent(), postForm.getStatus());
 
         return "redirect:/post/detail/" + postId;
     }
