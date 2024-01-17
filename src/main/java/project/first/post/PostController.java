@@ -42,7 +42,7 @@ public class PostController {
 
         postService.save(post, boardId);
 
-        return "redirect:/post/posts?boardId=" + boardId;
+        return "redirect:/post/detail/" + post.getId();
     }
 
     @GetMapping
