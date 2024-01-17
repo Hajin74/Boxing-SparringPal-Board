@@ -10,7 +10,6 @@
 <div class="container">
     <div th:replace="fragments/bodyHeader :: bodyHeader"/>
     <form role="form" action="/post/update" th:object="${postForm}" method="post">
-        <input type="hidden" th:name="boardId" th:value="${param.boardId}"/>
         <input type="hidden" th:name="postId" th:value="${param.postId}"/>
 
         <div class="form-group">
