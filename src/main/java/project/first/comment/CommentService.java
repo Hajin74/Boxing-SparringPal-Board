@@ -31,4 +31,10 @@ public class CommentService {
         return commentRepository.findByPostId(postId);
     }
 
+    // 댓글 수정
+    @Transactional
+    public void update(Long commentId, String content) {
+        Comment comment = commentRepository.findOne(commentId);
+        comment.updateComment(content);
+    }
 }
