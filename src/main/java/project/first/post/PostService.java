@@ -14,7 +14,6 @@ import java.util.List;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-@Slf4j
 public class PostService {
 
     private final PostRepository postRepository;
