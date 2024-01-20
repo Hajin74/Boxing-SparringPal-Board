@@ -27,6 +27,14 @@ public class PostRepository {
                 .getResultList();
     }
 
+    public List<Post> findByTitle(String title, Long boardId) {
+        return entityManager.createQuery("SELECT p FROM Post p WHERE p.board.id = :boardId and p.title LIKE :title", Post.class)
+                .setParameter("title", "%" + title + "%")
+                .setParameter("boardId", boardId)
+                .getResultList();
+
+    }
+
     public List<Post> findByUser(String user) {
         return entityManager.createQuery("SELECT p FROM Post p WHERE p.user = :user", Post.class)
                 .setParameter("user", user)
@@ -34,7 +42,7 @@ public class PostRepository {
     }
 
     public List<Post> findByBoardId(Long boardId) {
-        return entityManager.createQuery("SELECT p FROM Post p WHERE p.board.id = :boardId", Post.class)
+        return entityManager.createQuery("SELECT p FROM Post p WHERE p.board.id = :boardId ORDER BY p.createdAt DESC", Post.class)
                 .setParameter("boardId", boardId)
                 .getResultList();
     }
