@@ -14,6 +14,7 @@ import project.first.comment.Comment;
 import project.first.user.User;
 import project.first.user.UserRequestDTO;
 
+import java.util.Collections;
 import java.util.List;
 
 @Controller
@@ -53,6 +54,7 @@ public class PostController {
     public String showPostsByBoardId(@RequestParam("boardId") Long boardId, Model model) {
         Board board = boardService.findOne(boardId);
         List<Post> posts = postService.findByBoard(boardId);
+//        Collections.reverse(posts);
 
         model.addAttribute("posts", posts);
         model.addAttribute("board", board);
@@ -99,5 +101,17 @@ public class PostController {
 
         return "redirect:/post/posts?boardId=" + boardId;
     }
+
+    @GetMapping("/search")
+    public String searchPost(@RequestParam("title") String title, @RequestParam("boardId") Long boardId, Model model) {
+        List<Post> posts = postService.findByTitle(title, boardId);
+        System.out.println(posts.size());
+        model.addAttribute("posts", posts);
+        model.addAttribute("title", title);
+        model.addAttribute("board", boardService.findOne(boardId));
+
+        return "post/postList";
+    }
+
 
 }

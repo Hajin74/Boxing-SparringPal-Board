@@ -47,6 +47,11 @@ public class PostService {
         return postRepository.findByBoardId(boardId);
     }
 
+    // 게시글 부분 조회 - 제목 기반
+    public List<Post> findByTitle(String title, Long boardId) {
+        return postRepository.findByTitle(title, boardId);
+    }
+
     // 게시글 수정
     @Transactional
     public void update(Long postId, String title, String content, PostStatus status) {
