@@ -15,7 +15,6 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-@Slf4j
 @RequestMapping("/")
 public class FirstController {
 
@@ -26,7 +25,6 @@ public class FirstController {
     public String home(Model model) {
         List<Board> boards = boardService.findAll();
         model.addAttribute("boards", boards);
-        log.info("<< FirstController >>");
         return "home";
     }
 

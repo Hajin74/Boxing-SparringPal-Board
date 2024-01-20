@@ -1,6 +1,7 @@
 package project.first.user;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import project.first.post.Post;
@@ -28,9 +29,13 @@ public class UserRepository {
     }
 
     public User findByName(String name) {
-        return entityManager.createQuery("SELECT u FROM User u WHERE u.name = :name", User.class)
-                .setParameter("name", name)
-                .getSingleResult();
+        try {
+            return entityManager.createQuery("SELECT u FROM User u WHERE u.name = :name", User.class)
+                    .setParameter("name", name)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 
 }

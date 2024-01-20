@@ -2,12 +2,14 @@ package project.first.post;
 
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
+@Slf4j
 public class PostRepository {
 
     private final EntityManager entityManager;
@@ -25,24 +27,43 @@ public class PostRepository {
                 .getResultList();
     }
 
+    public List<Post> findByTitle(String title, Long boardId) {
+        return entityManager.createQuery("SELECT p FROM Post p WHERE p.board.id = :boardId and p.title LIKE :title", Post.class)
+                .setParameter("title", "%" + title + "%")
+                .setParameter("boardId", boardId)
+                .getResultList();
+
+    }
+
     public List<Post> findByUser(String user) {
         return entityManager.createQuery("SELECT p FROM Post p WHERE p.user = :user", Post.class)
                 .setParameter("user", user)
                 .getResultList();
     }
 
+    public List<Post> findByBoardId(Long boardId) {
+        return entityManager.createQuery("SELECT p FROM Post p WHERE p.board.id = :boardId ORDER BY p.createdAt DESC", Post.class)
+                .setParameter("boardId", boardId)
+                .getResultList();
+    }
+
+    public Post findById(Long postId) {
+        return entityManager.createQuery("SELECT p FROM Post p WHERE p.id = :postId", Post.class)
+                .setParameter("postId", postId)
+                .getSingleResult();
+    }
+
     public void update(Post post) {
-        entityManager.createQuery("UPDATE Post p SET p.title = :title, p.content = :content WHERE p.id = :id")
+        int result = entityManager.createQuery("UPDATE Post p SET p.title = :title, p.content = :content WHERE p.id = :id")
                 .setParameter("title", post.getTitle())
                 .setParameter("content", post.getContent())
                 .setParameter("id", post.getId())
                 .executeUpdate();
+        log.info("<< update 결과 : " + result + " >>");
     }
 
-    public void delete(Long id) {
-        entityManager.createQuery("Delete From Post p WHERE p.id = :id")
-                .setParameter("id", id)
-                .executeUpdate();
+    public void delete(Post post) {
+        entityManager.remove(post);
     }
 
 }
