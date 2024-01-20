@@ -10,5 +10,7 @@ public class BoardForm {
 
     @NotEmpty(message = "게시판 제목은 필수입니다.")
     private String title;
+    @NotEmpty(message = "사용자 이름은 필수입니다.")
+    private String login;
 
 }
