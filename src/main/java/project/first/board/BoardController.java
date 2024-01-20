@@ -1,11 +1,13 @@
 package project.first.board;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import project.first.user.User;
+import project.first.user.UserService;
 
 import java.util.List;
 
@@ -15,6 +17,7 @@ import java.util.List;
 public class BoardController {
 
     private final BoardService boardService;
+    private final UserService userService;
 
     @GetMapping("/createForm")
     public String showCreateForm() {
@@ -22,14 +25,20 @@ public class BoardController {
     }
 
     @PostMapping("/create")
-    public String createBoard(BoardForm boardForm) {
-        Board board = Board.builder()
-                .title(boardForm.getTitle())
-                .build();
+    public String createBoard(BoardForm boardForm, Model model) {
 
-        boardService.create(board);
+        User user = userService.findOne(boardForm.getLogin());
+        if (user != null) {
+            Board board = Board.builder()
+                    .title(boardForm.getTitle())
+                    .build();
+            boardService.create(board);
 
-        return "redirect:/";
+            return "redirect:/";
+        } else {
+            model.addAttribute("errorMessage", "입력한 사용자가 없습니다. 정확한 사용자 이름을 입력해주세요.");
+            return "board/createForm";
+        }
     }
 
     @GetMapping
