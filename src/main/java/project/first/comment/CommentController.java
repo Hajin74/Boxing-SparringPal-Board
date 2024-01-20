@@ -9,7 +9,6 @@ import project.first.post.PostService;
 
 @Controller
 @RequiredArgsConstructor
-@Slf4j
 @RequestMapping("/comment")
 public class CommentController {
 

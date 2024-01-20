@@ -2,15 +2,12 @@ package project.first.comment;
 
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
-import project.first.post.Post;
 
 import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
-@Slf4j
 public class CommentRepository {
 
     private final EntityManager entityManager;
