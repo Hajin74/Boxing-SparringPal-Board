@@ -43,3 +43,6 @@ out/
 
 ### DB
 applicaation.properties
+
+### log
+logs/
