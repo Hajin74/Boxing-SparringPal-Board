@@ -1,10 +1,7 @@
 package project.first.board;
 
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import project.first.post.Post;
 
 import java.util.ArrayList;
@@ -13,7 +10,9 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@RequiredArgsConstructor
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Board {
 
     @Id
@@ -23,13 +22,19 @@ public class Board {
 
     private String title;
 
-    @OneToMany(mappedBy = "board") // 양방향 연관관계 매핑
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, fetch = FetchType.LAZY) // 양방향 연관관계 매핑
     private List<Post> posts = new ArrayList<>();
 
-    // 연관관계 메소드
+
+    /* 연관관계 메소드 */
     public void addPost(Post post) {
         posts.add(post);
         post.setBoard(this);
+    }
+
+    /* 메소드 */
+    public void updateBoard(String title) {
+        this.title = title;
     }
 
 }

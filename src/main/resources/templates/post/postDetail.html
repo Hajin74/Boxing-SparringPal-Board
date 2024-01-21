@@ -1,0 +1,98 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header"/>
+<style>
+    .fieldError {
+         border-color: #bd2130;
+    }
+    #title {
+        margin-top: 5px;
+    }
+    .post-info {
+        display: flex;
+        justify-content: space-between;
+    }
+    #content-wrapper {
+        border-top: 1px solid black;
+        border-bottom: 1px solid black;
+        padding: 20px 0px;
+    }
+    .content-buttons {
+        margin-top: 30px;
+    }
+    .comment-input {
+        width: 100%;
+        display: flex;
+        padding: 20px 0;
+        justify-content: space-between;
+        border-bottom: 1px solid black;
+   }
+   .comment-info {
+        display: flex;
+        justify-content: space-between;
+   }
+   .comment-created-at {
+        font-size: 12px;
+   }
+   .comment-buttons btn {
+        height: 12px;
+   }
+   .comment-content {
+        border: none;
+        width: 100%;
+   }
+
+
+
+
+</style>
+<body>
+<div class="container">
+    <div th:replace="fragments/bodyHeader :: bodyHeader"/>
+
+    <div>
+        <a id="board-id" th:text="${post.board.title}" th:href="@{/post/posts(boardId=${post.board.id})}"></a>
+        <h3 id="title" th:text="${post.title}"></h3>
+        <div class="post-info">
+            <span id="createdAt" th:text="${post.createdAt}"></span>
+            <span id="status" th:text="${post.status}"></span>
+        </div>
+    </div>
+
+    <div id="content-wrapper">
+        <div th:text="${post.content}" style=""></div>
+        <form class="content-buttons" method="post" th:action="@{/post/delete/{postId}(postId=${post.id})}">
+            <input type="hidden" name="_method" value="delete"/>
+            <a class="btn btn-lg btn-primary"
+               th:href="@{/post/updateForm(postId=${post.id}, boardId=${post.board.id})}">게시글 수정하기</a>
+            <button type="submit" class="btn btn-lg btn-primary">게시글 삭제하기</button>
+        </form>
+    </div>
+
+    <div class="comments-wrapper">
+        <form class="comment-input" role="form" th:object="${commentForm}" method="post" action="/comment/create">
+            <input type="hidden" th:name="postId" th:value="${post.id}"/>
+            <input type="text" name="content" id="content" laceholder="댓글을 입력하세요" style="width: 550px;">
+            <button tyle="submit" class="btn btn-lg btn-primary">댓글 작성하기</button>
+        </form>
+        <div class="comments" th:each="comment : ${comments}" style="margin: 20px 0 ;">
+            <span class="comment-created-at" th:text="${comment.createdAt}"></span>
+            <div class="comment-button" style="display: flex; justify-content: space-between;">
+                <form method="post" th:action="@{/comment/update(postId=${post.id}, commentId=${comment.id})}">
+                    <input type="text" name="content" class="comment-content" th:value="${comment.content}"
+                           style="width: 547px; display: inline; margin-right: 10px;"/>
+                    <button type="submit" class="btn btn-sm btn-primary">댓글 수정</button>
+                </form>
+                <form class="comment-form" method="post" th:object="${commentForm}"
+                      th:action="@{/comment/delete/{comment}(comment=${comment.id})}">
+                    <input type="hidden" name="_method" value="delete"/>
+                    <button type="submit" class="btn btn-sm btn-primary">댓글 삭제</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="fragments/footer :: footer"/>
+</div> <!-- /container -->
+</body>
+</html>

@@ -1,26 +1,45 @@
 package project.first.board;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import project.first.post.Post;
+import project.first.user.User;
+import project.first.user.UserService;
 
 import java.util.List;
-
-
 
 @Controller
 @RequestMapping("/board")
 @RequiredArgsConstructor
-@Slf4j
 public class BoardController {
 
     private final BoardService boardService;
+    private final UserService userService;
+
+    @GetMapping("/createForm")
+    public String showCreateForm() {
+        return "board/createForm";
+    }
+
+    @PostMapping("/create")
+    public String createBoard(BoardForm boardForm, Model model) {
+
+        User user = userService.findOne(boardForm.getLogin());
+        if (user != null) {
+            Board board = Board.builder()
+                    .title(boardForm.getTitle())
+                    .build();
+            boardService.create(board);
+
+            return "redirect:/";
+        } else {
+            model.addAttribute("errorMessage", "입력한 사용자가 없습니다. 정확한 사용자 이름을 입력해주세요.");
+            return "board/createForm";
+        }
+    }
 
     @GetMapping
     public List<Board> getAllBoard() {
@@ -32,21 +51,10 @@ public class BoardController {
         return boardService.findOne(id);
     }
 
-    @PostMapping("/create")
-    public String createBoard(BoardForm boardForm) {
-        Board board = new Board();
-        board.setTitle(boardForm.getTitle());
-        Long createdBoardId = boardService.create(board);
-        log.info("<< createBoard 메소드 >> : " + createdBoardId);
-
-        return "redirect:/";
-    }
-
     @PostMapping("/modify")
     public ResponseEntity<Board> updateBoard(@RequestBody BoardRequestDTO boardRequestDTO) {
-        Board board = new Board();
-        board.setId(boardRequestDTO.getId());
-        board.setTitle(boardRequestDTO.getTitle());
+        Board board = boardService.findOne(boardRequestDTO.getId());
+        board.updateBoard(boardRequestDTO.getTitle());
         boardService.update(board);
 
         return new ResponseEntity<>(board, HttpStatus.OK);
@@ -57,27 +65,6 @@ public class BoardController {
         boardService.delete(id);
 
         return new ResponseEntity<>(true, HttpStatus.OK);
-    }
-
-    // todo: 실패할 경우 예외처리가 필요할 것 같은데..
-
-    @GetMapping("/{boardId}/postList")
-    public String showPostList(@PathVariable("boardId") Long id, Model model) {
-        Board board = boardService.findOne(id);
-        List<Post> posts = board.getPosts();
-
-        model.addAttribute("board", board);
-        model.addAttribute("posts", posts);
-
-        log.info("<< showPostList 메소드 >>");
-
-        return "post/postList";
-    }
-
-    @GetMapping("/createForm")
-    public String showCreateForm() {
-        log.info("<< showCreateForm 메소드 >>");
-        return "board/createForm";
     }
 
 }
